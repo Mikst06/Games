@@ -2,19 +2,32 @@
 #include <stdbool.h>
 #include <stdlib.h>
 void PlayerNUM(int *player);
-void Print(char square[],int player);
+void Print(char square[],int player,int score1,int score2);
 void Change(char square[],int player);
 int Answer(char square[]);
-bool WIN(char square[],int player);
+bool WIN(char square[],int *player,int *score1, int *score2);
+bool Continue();
 void main()
 {
-  int player = 2;
+  int player = 2,score1 = 0,score2 = 0;
   char square[9] = { '1','2','3','4','5','6','7','8','9' };
   do
     {
-      PlayerNUM(&player);
-      Print(square,player);
-    }while(WIN(square,player) == false);  
+    do
+      {
+	PlayerNUM(&player);
+	Print(square,player,score1,score2);
+      }while(WIN(square,&player,&score1,&score2) == false);
+    square[0] = '1';
+    square[1] = '2';
+    square[2] = '3';
+    square[3] = '4';
+    square[4] = '5';
+    square[5] = '6';
+    square[6] = '7';
+    square[7] = '8';
+    square[8] = '9';
+    }while(Continue() == true);
 }
 void PlayerNUM(int *player)
 {
@@ -73,10 +86,10 @@ void Change(char square[],int player)
 	}
       }
 }                  
-void Print(char square[], int player)
+void Print(char square[], int player,int score1,int score2)
 { 
   system("clear");
-  printf("\t\t\t\t\t\tPlayer 1 'X', Player 2 'O'\n\t\t\t\t\t\tPlayer %d turn\n\n\n",player); 
+  printf("\t\t\t\t\t\tPlayer 1 'X', Player 2 'O'\n\t\t\t\t\t\tPlayer %d turn\n\t\t\t\t\t\tSCORE: Player 1 -%d- Player2 -%d- \n\n\n",player,score1,score2); 
   printf("\n\n\n\n\n\n");
   printf("\t\t\t\t\t\t\t| %c | %c | %c |\n",square[0],square[1],square[2]);
   printf("\t\t\t\t\t\t\t| %c | %c | %c |\n",square[3],square[4],square[5]);
@@ -86,17 +99,25 @@ void Print(char square[], int player)
   
   
 }
-bool WIN(char square[],int player)
+bool WIN(char square[],int *player,int *score1,int *score2)
 {
   if ( (square[0] ==  square[1] && square [1] == square[2]) || (square[3] ==  square[4] && square [4] == square[5]) || (square[6] ==  square[7] && square [7] == square[8]) || (square[0] ==  square[3] && square [3] == square[6]) || (square[1] ==  square[4] && square [4] == square[7]) || (square[2] ==  square[5] && square [5] == square[8]) || (square[0] ==  square[4] && square [4] == square[8]) || (square[2] ==  square[4] && square [4] == square[6]) )
     {
       system("clear");
       printf("\n\n\n\n\n\n\n\n");      
-      printf("\t\t\t\t\t\t\tPLAYER %d WINS\n\n",player);
+      printf("\t\t\t\t\t\t\tPLAYER %d WINS\n\n",*player);
       printf("\t\t\t\t\t\t\t| %c | %c | %c |\n",square[0],square[1],square[2]);
       printf("\t\t\t\t\t\t\t| %c | %c | %c |\n",square[3],square[4],square[5]);
       printf("\t\t\t\t\t\t\t| %c | %c | %c |\n",square[6],square[7],square[8]);
       printf("\n\n");
+      if ( *player == 1 )
+	{
+	  *score1 +=1;
+	}
+      else
+	{
+	  *score2 +=1;
+	}	
       return true;
     }
   else if (( square[0] != '1' ) && ( square[1] != '2' ) && ( square[2] != '3' ) && ( square[3] != '4' ) && ( square[4] != '5' ) && 
@@ -112,5 +133,18 @@ bool WIN(char square[],int player)
       return true;
     }
 }
-      
-    
+bool Continue()
+{
+  char AnswerCont,space;
+  printf("Do you want to play again ?\nY - yes N - no\n");
+  scanf("%c",&space);
+  scanf("%c",&AnswerCont); 
+  if ( (AnswerCont == 'Y') || ( AnswerCont == 'y' ) )
+    {
+      return true;
+    }
+  else
+    {
+      return false;
+    }
+}
