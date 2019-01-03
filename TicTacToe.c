@@ -49,8 +49,12 @@ int Answer(char square[])
   if (( square[answer-1] == 'X' ) || ( square[answer-1] == 'O' ))
     {
       printf("You can't choose that square. There is '%c' already.\n",square[answer-1]);
-    }				      
-  }while(( square[answer-1] == 'X' ) || ( square[answer-1] == 'O' ) );
+    }
+   else if (( square[answer-1] != 'X' ) && ( square[answer-1] != 'O' ))
+    {
+	  printf("Wrong mark");
+    }
+  }while((( square[answer-1] == 'X' ) || ( square[answer-1] == 'O' ) || (( square[answer-1] != 'X' ) && ( square[answer-1] != 'O' )));
   return answer;
 }
 void Change(char square[],int player)
